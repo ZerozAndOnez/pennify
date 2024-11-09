@@ -1,0 +1,18 @@
+<div class="auth-form" style="border-color: blue">
+  <h2>Sign Up</h2>
+  <form (ngSubmit)="onSignup()">
+    <ejs-textbox
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+    ></ejs-textbox>
+    <ejs-textbox
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      name="password"
+    ></ejs-textbox>
+    <button ejs-button type="submit" cssClass="e-primary">Sign Up</button>
+    <p *ngIf="authStore.error$ | async as error" class="error">{{ error }}</p>
+  </form>
+</div>

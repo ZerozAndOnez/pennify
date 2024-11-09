@@ -1,10 +1,12 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SignupComponent } from './auth/signup/signup.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @Component({
   selector: 'app-nx-welcome',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoginComponent, SignupComponent],
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -436,6 +438,13 @@ import { CommonModule } from '@angular/common';
             Welcome frontend 👋
           </h1>
         </div>
+
+        <!-- SIGNUP AND LOGIN FOR TESTING -->
+        <div id="auth-forms">
+          <app-auth-login></app-auth-login>
+          <app-auth-signup></app-auth-signup>
+        </div>
+
         <!--  HERO  -->
         <div id="hero" class="rounded">
           <div class="text-container">
