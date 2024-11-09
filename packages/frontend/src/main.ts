@@ -4,7 +4,7 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 
-registerLicense(environment.syncfusionLicenseKey);
+registerLicense(environment.syncfusionPublicLicenseKey);
 
 bootstrapApplication(AppComponent, appConfig).catch((err) =>
   console.error(err)

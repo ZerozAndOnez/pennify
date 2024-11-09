@@ -1,4 +1,5 @@
 export interface Environment {
-    production: boolean;
+  production: boolean;
+  syncfusionPublicLicenseKey: string;
   apiUrl: string;
-  }
+}
