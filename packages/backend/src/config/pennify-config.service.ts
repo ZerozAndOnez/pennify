@@ -18,4 +18,8 @@ export class PennifyConfigService implements Environment {
   get jwtSecret(): string {
     return String(this.configService.get<string>('jwtSecret'));
   }
+
+  get frontendUrl(): string {
+    return String(this.configService.get<string>('frontendUrl'));
+  }
 }
