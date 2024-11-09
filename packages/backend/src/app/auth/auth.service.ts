@@ -46,13 +46,13 @@ export class AuthService {
   async login(
     email: string,
     password: string
-  ): Promise<{ accessToken: string }> {
-    const user = await this.userModel.findOne({ email });
+  ): Promise<User & { accessToken: string }> {
+    const user = await this.userModel.findOne({ email }).lean();
     if (!user || !(await this.validatePassword(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const accessToken = await this.generateJwt(user);
-    return { accessToken };
+    const accessToken = await this.generateJwt(user as UserDocument);
+    return { ...user, accessToken };
   }
 }
