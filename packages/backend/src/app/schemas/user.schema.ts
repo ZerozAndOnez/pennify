@@ -8,7 +8,10 @@ export class User {
   @Prop({ type: Types.ObjectId, default: () => new Types.ObjectId() })
   _id!: Types.ObjectId;
 
-  @Prop({ required: true })
+  /**
+   * TODOLuxury: Add as part of profile update
+   */
+  @Prop({ required: false, default: '' })
   name!: string;
 
   @Prop({ required: true, unique: true })
