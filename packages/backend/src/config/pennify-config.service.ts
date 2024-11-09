@@ -14,4 +14,8 @@ export class PennifyConfigService implements Environment {
   get nodeEnv(): string {
     return String(this.configService.get<string>('nodeEnv'));
   }
+
+  get jwtSecret(): string {
+    return String(this.configService.get<string>('jwtSecret'));
+  }
 }
