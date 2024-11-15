@@ -1,0 +1,29 @@
+$primary: #0d6efd;
+$secondary: #FF6F61;
+$success: #4CAF50;
+$info: #2196F3;
+$warning: #FFC107;
+$danger: #F44336;
+$light: #F7F9FC;
+$dark: #333333;
+
+.btn-primary {
+    color: $light;
+}
+
+$body-font-family: 'Roboto', sans-serif; // Use Google Font Roboto
+$body-font-size: 1rem;
+$body-color: $dark;
+$headings-font-family: 'Roboto', sans-serif;
+$headings-color: $dark;
+$headings-font-weight: 600;
+
+$btn-primary-bg: $primary;
+$btn-secondary-bg: $secondary;
+
+$card-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+$box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+$navbar-bg: $primary;
+$navbar-color: $light;
+$navbar-link-hover-color: $secondary;

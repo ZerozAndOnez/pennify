@@ -27,7 +27,7 @@
           }
         ],
         "styles": [
-          "packages/frontend/src/styles.scss"
+          "packages/frontend/src/styles/styles.scss"
         ],
         "scripts": [],
         "stylePreprocessorOptions": {
