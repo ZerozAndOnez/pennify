@@ -1,18 +1,54 @@
-<div class="auth-form" style="border-color: blue">
-  <h2>Sign Up</h2>
-  <form (ngSubmit)="onSignup()">
-    <ejs-textbox
-      placeholder="Email"
-      [(ngModel)]="email"
-      name="email"
-    ></ejs-textbox>
-    <ejs-textbox
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password"
-      name="password"
-    ></ejs-textbox>
-    <button ejs-button type="submit" cssClass="e-primary">Sign Up</button>
-    <p *ngIf="authStore.error$ | async as error" class="error">{{ error }}</p>
-  </form>
-</div>
+<app-auth-background direction="to right">
+  <app-auth-card>
+    <div class="row g-0">
+      <div class="col-lg-6 p-5 bg-white">
+        <h2 class="text-center text-primary mb-2">
+          {{ 'Sign Up' | translate }}
+        </h2>
+        <p class="text-center text-muted mb-2">
+          {{ 'Create a new account' | translate }}
+        </p>
+        <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+          <div class="mb-3">
+            <app-input-email
+              [control]="signupForm.get('email')"
+            ></app-input-email>
+          </div>
+
+          <div class="mb-3">
+            <app-input-password
+              [control]="signupForm.get('password')"
+            ></app-input-password>
+          </div>
+
+          <div class="d-grid">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="signupForm.invalid"
+            >
+              {{ 'Sign Up' | translate }}
+            </button>
+          </div>
+        </form>
+        <p class="text-center mt-4">
+          {{ 'Already have an account?' | translate }}
+          <a
+            routerLink="/auth/login"
+            class="text-primary text-decoration-none"
+            >{{ 'Log In' | translate }}</a
+          >
+        </p>
+      </div>
+
+      <div
+        class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center"
+      >
+        <app-auth-illustration
+          src="assets/svgs/signup.svg"
+          alt="Sign Up Illustration"
+        ></app-auth-illustration>
+      </div>
+    </div>
+  </app-auth-card>
+</app-auth-background>
