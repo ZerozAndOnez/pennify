@@ -1,18 +1,54 @@
-<div class="auth-form">
-  <h2>Login</h2>
-  <form (ngSubmit)="onLogin()">
-    <ejs-textbox
-      placeholder="Email"
-      [(ngModel)]="email"
-      name="email"
-    ></ejs-textbox>
-    <ejs-textbox
-      type="password"
-      placeholder="Password"
-      [(ngModel)]="password"
-      name="password"
-    ></ejs-textbox>
-    <button ejs-button type="submit" cssClass="e-primary">Login</button>
-    <p *ngIf="authStore.error$ | async as error" class="error">{{ error }}</p>
-  </form>
-</div>
+<app-auth-background>
+  <app-auth-card>
+    <div class="row g-0">
+      <div class="col-lg-6 p-5 bg-white">
+        <h2 class="text-center text-primary mb-2">
+          {{ 'Welcome Back' | translate }}
+        </h2>
+        <p class="text-center text-muted mb-2">
+          {{ 'Log in to your account' | translate }}
+        </p>
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <div class="mb-3">
+            <app-input-email
+              [control]="loginForm.get('email')"
+            ></app-input-email>
+          </div>
+
+          <div class="mb-3">
+            <app-input-password
+              [control]="loginForm.get('password')"
+            ></app-input-password>
+          </div>
+
+          <div class="d-grid">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="loginForm.invalid"
+            >
+              {{ 'Log In' | translate }}
+            </button>
+          </div>
+        </form>
+        <p class="text-center mt-4">
+          {{ "Don't have an account?" | translate }}
+          <a
+            routerLink="/auth/signup"
+            class="text-primary text-decoration-none"
+            >{{ 'Sign Up' | translate }}</a
+          >
+        </p>
+      </div>
+
+      <div
+        class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center"
+      >
+        <app-auth-illustration
+          src="assets/svgs/login.svg"
+          alt="Login Illustration"
+        ></app-auth-illustration>
+      </div>
+    </div>
+  </app-auth-card>
+</app-auth-background>

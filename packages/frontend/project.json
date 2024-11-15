@@ -23,7 +23,13 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "packages/frontend/public"
+            "input": "packages/frontend/public",
+            "output": "/"
+          },
+          {
+            "glob": "**/*",
+            "input": "packages/frontend/src/assets",
+            "output": "/assets"
           }
         ],
         "styles": [

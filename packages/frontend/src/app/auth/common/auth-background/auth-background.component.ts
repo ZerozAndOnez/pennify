@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,17 +8,18 @@ import { CommonModule } from '@angular/common';
   template: `
     <div
       class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light auth-background"
+      [ngStyle]="{
+        background:
+          'linear-gradient(' +
+          direction +
+          ',  var(--auth-background-start-color), var(--auth-background-end-color))'
+      }"
     >
       <ng-content></ng-content>
     </div>
   `,
-  styles: [
-    `
-      .auth-background {
-        @import 'src/styles/_variables.scss';
-        background: $background-gradient;
-      }
-    `,
-  ],
+  styles: [],
 })
-export class AuthBackgroundComponent {}
+export class AuthBackgroundComponent {
+  @Input() direction: string = 'to left';
+}

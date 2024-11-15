@@ -28,4 +28,10 @@ $navbar-bg: $primary;
 $navbar-color: $light;
 $navbar-link-hover-color: $secondary;
 
-$auth-background-gradient: linear-gradient(to left, #f7f9fc, #e3efff);
+$auth-background-start-color: #f7f9fc;
+$auth-background-end-color: #e3efff;
+
+:root {
+    --auth-background-start-color: #{$auth-background-start-color};
+    --auth-background-end-color: #{$auth-background-end-color};
+}
