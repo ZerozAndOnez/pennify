@@ -1,11 +1,27 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { registerLicense } from '@syncfusion/ej2-base';
-import { appConfig } from './app/app.config';
+import {
+  getAllDataFromLocalForage,
+  default as localForage,
+} from 'ngrx-store-persist';
+
 import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
 import { environment } from './environments/environment';
+import { STORE_KEYS } from './store/index';
 
-registerLicense(environment.syncfusionPublicLicenseKey);
+async function main() {
+  // Load persisted state before bootstrap
+  await getAllDataFromLocalForage({
+    driver: localForage.INDEXEDDB,
+    keys: STORE_KEYS,
+  });
 
-bootstrapApplication(AppComponent, appConfig).catch((err) =>
-  console.error(err)
-);
+  registerLicense(environment.syncfusionPublicLicenseKey);
+
+  bootstrapApplication(AppComponent, appConfig).catch((err) =>
+    console.error(err)
+  );
+}
+
+main();
