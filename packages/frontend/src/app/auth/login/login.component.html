@@ -12,29 +12,52 @@
           <div class="mb-3">
             <app-input-email
               [control]="loginForm.get('email')"
+              (input)="clearError()"
             ></app-input-email>
           </div>
 
           <div class="mb-3">
             <app-input-password
               [control]="loginForm.get('password')"
+              (input)="clearError()"
             ></app-input-password>
+          </div>
+
+          <div
+            *ngIf="(authStore.get$ | async)?.error as error"
+            class="alert alert-danger mt-3"
+          >
+            {{ error }}
           </div>
 
           <div class="d-grid">
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="loginForm.invalid"
+              [disabled]="
+                loginForm.invalid || (authStore.get$ | async)?.loading
+              "
             >
-              {{ 'Log In' | translate }}
+              <ng-container
+                *ngIf="(authStore.get$ | async)?.loading; else loginText"
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                {{ 'Loading...' | translate }}
+              </ng-container>
+              <ng-template #loginText>
+                {{ 'Log In' | translate }}
+              </ng-template>
             </button>
           </div>
         </form>
         <p class="text-center mt-4">
           {{ "Don't have an account?" | translate }}
           <a
-            routerLink="/auth/signup"
+            [routerLink]="getRedirectRoute(APP_ROUTE_PATHS.signup)"
             class="text-primary text-decoration-none"
             >{{ 'Sign Up' | translate }}</a
           >

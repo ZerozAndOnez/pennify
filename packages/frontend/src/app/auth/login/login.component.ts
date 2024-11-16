@@ -13,6 +13,7 @@ import { AuthCardComponent } from '../common/auth-card/auth-card.component';
 import { AuthIllustrationComponent } from '../common/auth-illustration/auth-illustration.component';
 import { AppInputModule } from '../../common/components/input/app-input/app-input.module';
 import { EmailComponent } from '../../common/components/input/email/email.component';
+import { APP_ROUTE_PATHS, getRedirectRoute } from '../../app.routes';
 
 @Component({
   standalone: true,
@@ -32,6 +33,8 @@ import { EmailComponent } from '../../common/components/input/email/email.compon
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild(EmailComponent) emailComponent!: EmailComponent;
   loginForm!: FormGroup;
+  APP_ROUTE_PATHS = APP_ROUTE_PATHS;
+  getRedirectRoute = getRedirectRoute;
 
   constructor(private fb: FormBuilder, public authStore: AuthStore) {}
 
@@ -52,5 +55,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     } else {
       this.loginForm.markAllAsTouched();
     }
+  }
+
+  clearError(): void {
+    this.authStore.clearError();
   }
 }

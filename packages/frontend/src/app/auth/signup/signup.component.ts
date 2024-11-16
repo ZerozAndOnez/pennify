@@ -13,6 +13,7 @@ import { AuthCardComponent } from '../common/auth-card/auth-card.component';
 import { AuthIllustrationComponent } from '../common/auth-illustration/auth-illustration.component';
 import { EmailComponent } from '../../common/components/input/email/email.component';
 import { PasswordComponent } from '../../common/components/input/password/password.component';
+import { APP_ROUTE_PATHS, getRedirectRoute } from '../../app.routes';
 
 @Component({
   standalone: true,
@@ -34,6 +35,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   @ViewChild(EmailComponent) emailComponent!: EmailComponent;
   signupForm!: FormGroup;
   focusedField: string | null = null;
+  APP_ROUTE_PATHS = APP_ROUTE_PATHS;
+  getRedirectRoute = getRedirectRoute;
 
   constructor(private fb: FormBuilder, public authStore: AuthStore) {}
 
@@ -64,5 +67,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
     if (this.focusedField === fieldName) {
       this.focusedField = null;
     }
+  }
+
+  clearError(): void {
+    this.authStore.clearError();
   }
 }
