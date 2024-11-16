@@ -8,6 +8,7 @@ import { User, UserSchema } from '../schemas/user.schema';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategyService } from './jwt-strategy.service';
+import { AppConfigModule } from '../app-config/app-config.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtStrategyService } from './jwt-strategy.service';
       inject: [PennifyConfigService],
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    AppConfigModule,
   ],
   providers: [AuthService, JwtStrategyService],
   exports: [AuthService],

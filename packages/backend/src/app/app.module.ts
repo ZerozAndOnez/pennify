@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { PennifyConfigModule } from '../config/pennify-config.module';
 import { PennifyConfigService } from '../config/pennify-config.service';
 import { AuthModule } from './auth/auth.module';
+import { AppConfigModule } from './app-config/app-config.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './auth/auth.module';
       inject: [PennifyConfigService],
     }),
     AuthModule,
+    AppConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService, PennifyConfigService],
