@@ -1,0 +1,15 @@
+<div class="custom-dropdown">
+  <button class="btn text-decoration-none" (click)="toggleDropdown($event)">
+    <i class="bi bi-three-dots-vertical"></i>
+  </button>
+  <ul *ngIf="isOpen" class="dropdown-menu show">
+    <li *ngFor="let option of options">
+      <button
+        class="dropdown-item"
+        (click)="selectOption(option.value, $event)"
+      >
+        {{ option.label }}
+      </button>
+    </li>
+  </ul>
+</div>
