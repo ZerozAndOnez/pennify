@@ -42,3 +42,6 @@ Thumbs.db
 .nx/workspace-data
 
 .angular
+/packages/frontend-e2e
+/packages/backend-e2e
+/packages/backend/**/**.env

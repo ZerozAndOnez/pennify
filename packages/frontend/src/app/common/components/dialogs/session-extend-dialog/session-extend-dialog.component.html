@@ -1,0 +1,28 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="sessionExtendModalLabel">
+      {{ 'Extend Session' | translate }}
+    </h5>
+  </div>
+  <div class="modal-body">
+    <p>
+      {{
+        'Your session is about to expire. Would you like to extend it?'
+          | translate
+      }}
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" (click)="onLogout()">
+      {{ 'No' | translate }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="onExtend()"
+      autofocus
+    >
+      {{ 'Yes' | translate }}
+    </button>
+  </div>
+</div>

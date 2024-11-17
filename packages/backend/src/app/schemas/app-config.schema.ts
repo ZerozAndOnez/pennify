@@ -16,6 +16,9 @@ export class AppConfig {
 
   @Prop({ required: true })
   refreshTokenDurationInMilliseconds!: number;
+
+  @Prop({ required: true })
+  extendSessionDialogDisplayPeriodInMilliseconds!: number;
 }
 
 export const AppConfigSchema = SchemaFactory.createForClass(AppConfig);

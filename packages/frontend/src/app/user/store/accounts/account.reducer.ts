@@ -1,8 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
 import { addAccount, removeAccount } from './account.actions';
 
+export interface Account {
+  email: string;
+  profileUrl?: string;
+}
+
 export interface AccountState {
-  accounts: string[];
+  accounts: Account[];
 }
 
 const initialState: AccountState = {
@@ -11,12 +16,12 @@ const initialState: AccountState = {
 
 export const accountReducer = createReducer(
   initialState,
-  on(addAccount, (state, { account }) => ({
+  on(addAccount, (state, account) => ({
     ...state,
-    accounts: [...new Set([...state.accounts, account])],
+    accounts: [...state.accounts, account],
   })),
-  on(removeAccount, (state, { account }) => ({
+  on(removeAccount, (state, account) => ({
     ...state,
-    accounts: state.accounts.filter((acc) => acc !== account),
+    accounts: state.accounts.filter((a) => a.email !== account.email),
   }))
 );

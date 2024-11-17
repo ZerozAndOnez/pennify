@@ -23,6 +23,7 @@ export class AppConfigService {
         _id: null,
         type: 'app_config',
         refreshTokenDurationInMilliseconds: 28800000,
+        extendSessionDialogDisplayPeriodInMilliseconds: 15000,
         maxAgeInMilliseconds: 604800000,
       };
     }

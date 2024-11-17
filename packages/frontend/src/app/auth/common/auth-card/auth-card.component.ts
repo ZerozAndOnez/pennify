@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
       class="card shadow-lg"
       style="
       max-width: 900px;
-      width: 90%;
       border-radius: 0.5rem;
       overflow: hidden;
     "

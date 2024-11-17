@@ -28,11 +28,25 @@ export class AuthService {
     >(`${this.endpointUrl}/login`, { email, password });
   }
 
+  refresh(email: string): Observable<UserState> {
+    return this.httpService.post<{ email: string }, UserState>(
+      `${this.endpointUrl}/refresh`,
+      { email }
+    );
+  }
+
+  remove(email: string): Observable<void> {
+    return this.httpService.post<{ email: string }, void>(
+      `${this.endpointUrl}/logout`,
+      { email }
+    );
+  }
+
   logout(): Observable<void> {
     return this.store.select(selectUser).pipe(
       take(1),
       switchMap((user) => {
-        if (user?.accessToken) {
+        if (user?.accessToken && user?.email) {
           return this.httpService
             .post<UserState, void>(`${this.endpointUrl}/logout`, user)
             .pipe(

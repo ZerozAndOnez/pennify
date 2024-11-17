@@ -3,6 +3,15 @@ import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
+export type SecureUser = Omit<User, 'password'>;
+
+export type UserAuthenticated = SecureUser & {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type SecureUserClientEnd = Omit<UserAuthenticated, 'refreshToken'>;
+
 @Schema()
 export class User {
   @Prop({ type: Types.ObjectId, default: () => new Types.ObjectId() })
