@@ -22,4 +22,12 @@ export class PennifyConfigService implements Environment {
   get frontendUrl(): string {
     return String(this.configService.get<string>('frontendUrl'));
   }
+
+  get sendGridApiKey(): string {
+    return String(this.configService.get<string>('sendGridApiKey'));
+  }
+
+  get sendGridFromEmail(): string {
+    return String(this.configService.get<string>('sendGridFromEmail'));
+  }
 }

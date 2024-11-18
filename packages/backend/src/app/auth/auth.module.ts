@@ -9,6 +9,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategyService } from './jwt-strategy.service';
 import { AppConfigModule } from '../app-config/app-config.module';
+import {
+  PasswordResetToken,
+  PasswordResetTokenSchema,
+} from '../schemas/password-reset-token.schema';
+import { EmailService } from '../../common/email/email.service';
 
 @Module({
   imports: [
@@ -21,10 +26,13 @@ import { AppConfigModule } from '../app-config/app-config.module';
       }),
       inject: [PennifyConfigService],
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: PasswordResetToken.name, schema: PasswordResetTokenSchema },
+    ]),
     AppConfigModule,
   ],
-  providers: [AuthService, JwtStrategyService],
+  providers: [AuthService, JwtStrategyService, EmailService],
   exports: [AuthService],
   controllers: [AuthController],
 })

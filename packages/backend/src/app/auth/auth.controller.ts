@@ -80,4 +80,16 @@ export class AuthController {
     );
     res.clearCookie('accessToken');
   }
+
+  @Post('password-reset-request')
+  async passwordResetRequest(@Body() body: { email: string }): Promise<void> {
+    await this.authService.generatePasswordResetToken(body.email);
+  }
+
+  @Post('password-reset')
+  async passwordReset(
+    @Body() body: { token: string; newPassword: string }
+  ): Promise<void> {
+    await this.authService.passwordReset(body.token, body.newPassword);
+  }
 }

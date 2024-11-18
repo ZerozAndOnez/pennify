@@ -63,4 +63,18 @@ export class AuthService {
       })
     );
   }
+
+  passwordResetRequest(email: string): Observable<void> {
+    return this.httpService.post<{ email: string }, void>(
+      `${this.endpointUrl}/password-reset-request`,
+      { email }
+    );
+  }
+
+  passwordReset(token: string, newPassword: string): Observable<void> {
+    return this.httpService.post<{ token: string; newPassword: string }, void>(
+      `${this.endpointUrl}/password-reset`,
+      { token, newPassword }
+    );
+  }
 }

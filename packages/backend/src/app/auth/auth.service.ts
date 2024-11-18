@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -8,10 +9,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as argon2 from 'argon2';
 import { Model } from 'mongoose';
 import type { Response } from 'express';
+import * as crypto from 'crypto';
 
 import { setCookie } from '../../utils/cookies/cookie.utils';
 import { hash } from '../../utils/hashing/hashing.utils';
-import { convertMillisecondsToSeconds } from '../../utils/datetime/datetime.utils';
+import {
+  addMinutes,
+  convertMillisecondsToSeconds,
+} from '../../utils/datetime/datetime.utils';
 import { AppConfigService } from './../app-config/app-config.service';
 import {
   SecureUser,
@@ -19,13 +24,22 @@ import {
   UserAuthenticated,
   UserDocument,
 } from '../schemas/user.schema';
+import { EmailService } from '../../common/email/email.service';
+import {
+  PasswordResetToken,
+  PasswordResetTokenDocument,
+} from '../schemas/password-reset-token.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private appConfigService: AppConfigService,
-    @InjectModel(User.name) private userModel: Model<UserDocument>
+    private emailService: EmailService,
+    @InjectModel(User.name)
+    private userModel: Model<UserDocument>,
+    @InjectModel(PasswordResetToken.name)
+    private passwordResetTokenModel: Model<PasswordResetTokenDocument>
   ) {}
 
   private getSecureUser = (user: User): SecureUser => {
@@ -143,6 +157,77 @@ export class AuthService {
     setCookie(res, refreshTokenCookieName, refreshToken, {
       maxAge: config.refreshTokenDurationInMilliseconds,
     });
+  }
+
+  async generatePasswordResetToken(email: string): Promise<void> {
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const hashedToken = await this.hashPassword(token);
+    // TODO TODOLuxury: Move token expiry duration to a config file
+    const EXPIRATION_DURATION_IN_MINUTES = 15;
+    const expiresAt = addMinutes(new Date(), EXPIRATION_DURATION_IN_MINUTES);
+
+    await this.passwordResetTokenModel.findOneAndUpdate(
+      { email },
+      { token: hashedToken, expiresAt },
+      { upsert: true, new: true }
+    );
+
+    /**
+     * Use jwtToken to make the reset link more robust with email
+     * without exposing the token in the URL and needing to rely on
+     * separators like : to split the token from the email
+     */
+    const jwtToken = this.jwtService.sign(
+      { email, token },
+      { expiresIn: `${EXPIRATION_DURATION_IN_MINUTES}m` }
+    );
+    // TODO TODOLuxury: Move routes to common constants file in monorepo
+    const resetLink = `${process.env.FRONTEND_URL}/auth/password-reset?token=${jwtToken}`;
+    const subject = 'Password Reset Request';
+    const text = `You requested a password reset. Click the link to reset your password: ${resetLink}`;
+    const html = `<p>You requested a password reset. Click the link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>
+    <p>You are free to reply to this email but don't expect a response.</p>`;
+
+    await this.emailService.sendMail(email, subject, text, html);
+  }
+
+  async validatePasswordResetToken(jwtToken: string): Promise<string> {
+    let payload: { email: string; token: string };
+
+    try {
+      payload = this.jwtService.verify(jwtToken);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      throw new UnauthorizedException(
+        'Invalid or expired password reset token'
+      );
+    }
+
+    const { email, token } = payload;
+    const resetToken = await this.passwordResetTokenModel.findOne({ email });
+    if (!resetToken || resetToken.expiresAt < new Date()) {
+      throw new UnauthorizedException('Expired password reset token');
+    }
+
+    const isValid = await this.validatePassword(token, resetToken.token);
+    if (!isValid) {
+      throw new UnauthorizedException('Invalid password reset token');
+    }
+
+    return email;
+  }
+
+  async passwordReset(token: string, newPassword: string): Promise<void> {
+    const email = await this.validatePasswordResetToken(token);
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    await this.userModel.updateOne({ email }, { password: hashedPassword });
+    await this.passwordResetTokenModel.deleteOne({ token });
   }
 
   getHashedRefreshTokenCookieName(email: string): string {
