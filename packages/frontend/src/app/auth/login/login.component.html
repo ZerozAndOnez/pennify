@@ -1,0 +1,145 @@
+<app-auth-background>
+  <app-auth-card>
+    <div class="row g-0">
+      <!-- Left Column: Login Form -->
+      <div class="col-lg-6 p-5 bg-white">
+        <ng-container *ngIf="!showRecentlyUsedAccounts; else accountList">
+          <h2 class="text-center text-primary mb-2">
+            {{ 'Hi there 👋' | translate }}
+          </h2>
+          <p class="text-center text-muted mb-2">
+            {{ 'Sign in to your account' | translate }}
+          </p>
+          <!-- Login Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <div class="mb-3">
+              <app-input-email
+                [control]="loginForm.get('email')"
+                (input)="clearError()"
+              ></app-input-email>
+            </div>
+            <div class="mb-3">
+              <app-input-password
+                [control]="loginForm.get('password')"
+                [showValidationRules]="false"
+                (input)="clearError()"
+              ></app-input-password>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="rememberMe"
+                  formControlName="rememberMe"
+                />
+                <label class="form-check-label" for="rememberMe">
+                  {{ 'Remember Me' | translate }}
+                </label>
+              </div>
+              <a
+                [routerLink]="
+                  getRedirectRoute(APP_ROUTE_PATHS.passwordResetRequest)
+                "
+                class="form-check text-primary text-decoration-none"
+              >
+                {{ 'Forgot Password?' | translate }}
+              </a>
+            </div>
+            <div
+              *ngIf="(authStore.get$ | async)?.error as error"
+              class="alert alert-danger mt-3"
+            >
+              {{ error }}
+            </div>
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="
+                  loginForm.invalid || (authStore.get$ | async)?.loading
+                "
+              >
+                <ng-container
+                  *ngIf="(authStore.get$ | async)?.loading; else loginText"
+                >
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  {{ 'Loading...' | translate }}
+                </ng-container>
+                <ng-template #loginText>
+                  {{ 'Sign In' | translate }}
+                </ng-template>
+              </button>
+            </div>
+          </form>
+          <p class="text-center mt-4">
+            {{ "Don't have an account?" | translate }}
+            <a
+              [routerLink]="getRedirectRoute(APP_ROUTE_PATHS.signup)"
+              class="text-primary text-decoration-none"
+            >
+              {{ 'Sign Up' | translate }}
+            </a>
+          </p>
+        </ng-container>
+
+        <ng-template #accountList>
+          <h2 class="text-center text-primary mb-2">
+            {{ 'Welcome Back' | translate }}
+          </h2>
+          <p class="text-center text-muted mb-3">
+            {{ 'Sign in to your account' | translate }}
+          </p>
+          <ul class="list-group mb-3">
+            <li
+              *ngFor="let account of accounts$ | async"
+              class="list-group-item d-flex justify-content-between align-items-center"
+              (click)="useAccount(account.email)"
+              style="cursor: pointer"
+            >
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="
+                    account?.profileUrl
+                      ? account?.profileUrl
+                      : getGravatarUrl(account.email)
+                  "
+                  alt="Avatar"
+                  class="rounded-circle me-3"
+                  width="40"
+                  height="40"
+                />
+                <span>{{ account.email }}</span>
+              </div>
+              <app-custom-dropdown
+                [options]="[{ label: removeText, value: account.email }]"
+                (optionSelected)="remove($event)"
+              ></app-custom-dropdown>
+            </li>
+          </ul>
+          <div class="text-center">
+            <button
+              class="btn btn-link text-decoration-none"
+              (click)="toggleView()"
+            >
+              {{ 'Sign in with another account' | translate }}
+            </button>
+          </div>
+        </ng-template>
+      </div>
+      <!-- Right Column: Illustration -->
+      <div
+        class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center"
+      >
+        <app-auth-illustration
+          src="assets/svgs/login.svg"
+          alt="Login Illustration"
+        ></app-auth-illustration>
+      </div>
+    </div>
+  </app-auth-card>
+</app-auth-background>

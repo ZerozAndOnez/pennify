@@ -1,0 +1,77 @@
+<app-auth-background direction="to right">
+  <app-auth-card>
+    <div class="row g-0">
+      <div class="col-lg-6 p-5 bg-white">
+        <h2 class="text-center text-primary mb-2">
+          {{ 'Sign Up' | translate }}
+        </h2>
+        <p class="text-center text-muted mb-2">
+          {{ 'Create a new account' | translate }}
+        </p>
+        <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+          <div class="mb-3">
+            <app-input-email
+              [control]="signupForm.get('email')"
+              (input)="clearError()"
+            ></app-input-email>
+          </div>
+
+          <div class="mb-3">
+            <app-input-password
+              [control]="signupForm.get('password')"
+              (input)="clearError()"
+            ></app-input-password>
+          </div>
+
+          <div
+            *ngIf="(authStore.get$ | async)?.error as error"
+            class="alert alert-danger mt-3"
+          >
+            {{ error }}
+          </div>
+
+          <div class="d-grid">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="
+                signupForm.invalid || (authStore.get$ | async)?.loading
+              "
+            >
+              <ng-container
+                *ngIf="(authStore.get$ | async)?.loading; else signUpText"
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                {{ 'Loading...' | translate }}
+              </ng-container>
+              <ng-template #signUpText>
+                {{ 'Sign Up' | translate }}
+              </ng-template>
+            </button>
+          </div>
+        </form>
+        <p class="text-center mt-4">
+          {{ 'Already have an account?' | translate }}
+          <a
+            [routerLink]="getRedirectRoute(APP_ROUTE_PATHS.login)"
+            class="text-primary text-decoration-none"
+            >{{ 'Log In' | translate }}</a
+          >
+        </p>
+      </div>
+
+      <div
+        class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center"
+      >
+        <app-auth-illustration
+          src="assets/svgs/signup.svg"
+          alt="Sign Up Illustration"
+        ></app-auth-illustration>
+      </div>
+    </div>
+  </app-auth-card>
+</app-auth-background>

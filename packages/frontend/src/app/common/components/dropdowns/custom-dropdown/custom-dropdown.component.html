@@ -1,0 +1,22 @@
+<div class="custom-dropdown">
+  <ng-container *ngIf="header; else defaultHeader">
+    <div (click)="toggleDropdown($event)">
+      <ng-container *ngTemplateOutlet="header"></ng-container>
+    </div>
+  </ng-container>
+  <ng-template #defaultHeader>
+    <button class="btn text-decoration-none" (click)="toggleDropdown($event)">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+  </ng-template>
+  <ul *ngIf="isOpen" class="dropdown-menu show">
+    <li *ngFor="let option of options">
+      <button
+        class="dropdown-item"
+        (click)="selectOption(option.value, $event)"
+      >
+        {{ option.label }}
+      </button>
+    </li>
+  </ul>
+</div>

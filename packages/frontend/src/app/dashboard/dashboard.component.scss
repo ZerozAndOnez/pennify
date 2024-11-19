@@ -1,0 +1,24 @@
+.container,
+.container-max-width {
+  max-width: 1264px;
+  margin: 0 auto;
+}
+
+.e-grid .e-toolbar-items .e-toolbar-item.e-search-wrapper .e-search {
+  width: 100%;
+}
+
+.e-grid .e-gridcontent {
+  // TODO TODOLuxury should be calculated dynamically
+  height: calc(100vh - 270px);
+  overflow-y: auto;
+}
+
+.e-pager .e-pagerdropdown {
+  margin-top: -30px;
+}
+
+.e-input-group.e-control-wrapper.e-ddl .e-input[readonly],
+.e-float-input.e-control-wrapper.e-ddl input[readonly] {
+  height: 37px;
+}
