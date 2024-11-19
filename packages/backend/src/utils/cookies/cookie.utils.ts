@@ -21,7 +21,6 @@ export const setCookie = (
   options = {
     ...options,
     secure: true,
-    // TODO change this to strict in production
     sameSite: 'none',
     httpOnly: options.httpOnly ?? true,
   };

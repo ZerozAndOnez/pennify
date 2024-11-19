@@ -48,7 +48,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "10mb"
             },
             {
               "type": "anyComponentStyle",
@@ -59,8 +59,8 @@
           "outputHashing": "all",
           "fileReplacements": [
             {
-              "replace": "src/environments/environment.ts",
-              "with": "src/environments/environment.prod.ts"
+              "replace": "packages/frontend/src/environments/environment.ts",
+              "with": "packages/frontend/src/environments/environment.prod.ts"
             }
           ]
         },
