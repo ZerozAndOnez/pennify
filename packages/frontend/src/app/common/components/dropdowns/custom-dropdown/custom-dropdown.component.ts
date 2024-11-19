@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  TemplateRef,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,11 +18,15 @@ import { CommonModule } from '@angular/common';
 })
 export class CustomDropdownComponent {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Input() options: { label: any; value: any }[] = [];
+  @Input() options: { label: string; value: any }[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Input() header: TemplateRef<any> | null = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Output() optionSelected = new EventEmitter<any>();
 
   isOpen = false;
+
+  constructor(private elementRef: ElementRef) {}
 
   toggleDropdown(event: MouseEvent): void {
     event.stopPropagation();
@@ -26,5 +38,12 @@ export class CustomDropdownComponent {
     event.stopPropagation();
     this.optionSelected.emit(option);
     this.isOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.isOpen = false;
+    }
   }
 }

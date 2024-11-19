@@ -28,9 +28,14 @@ import { TranslatePipe } from '../../../../pipes/intl/translate.pipe';
         (blur)="onBlur()"
       />
       <div *ngIf="control.invalid && (focused || control.touched)">
-        <app-password-rules
-          [validation]="passwordValidation"
-        ></app-password-rules>
+        <div *ngIf="showValidationRules">
+          <app-password-rules
+            [validation]="passwordValidation"
+          ></app-password-rules>
+        </div>
+        <div *ngIf="!showValidationRules && !focused" class="text-danger">
+          {{ 'Password is required' | translate }}
+        </div>
       </div>
     </div>
   `,
@@ -47,6 +52,7 @@ export class PasswordComponent implements ControlValueAccessor {
   @Input() placeholder: string = translate('Enter your password');
   @Input() control: any;
   @Input() validation!: PasswordValidationRules;
+  @Input() showValidationRules = true;
 
   focused: boolean = false;
 

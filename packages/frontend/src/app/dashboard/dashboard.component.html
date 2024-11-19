@@ -1,7 +1,106 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-danger" (click)="onLogout()">
-      {{ 'Sign out' | translate }}
-    </button>
+<div class="container-fluid p-3 bg-light border-bottom">
+  <div class="container-max-width">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <a
+          class="navbar-brand text-primary"
+          [ngClass]="{ active: isActiveRoute('/') }"
+          href="#"
+        >
+          {{ 'Dashboard' | translate }}
+        </a>
+      </div>
+      <div class="dropdown" *ngIf="user$ | async as user">
+        <ng-template #profileAvatar>
+          <img
+            [src]="user.profileUrl"
+            alt="User Avatar"
+            class="rounded-circle"
+            width="40"
+            height="40"
+            id="profileDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style="cursor: pointer"
+          />
+        </ng-template>
+        <app-custom-dropdown
+          [header]="profileAvatar"
+          [options]="[{ label: signOutText, value: '' }]"
+          (optionSelected)="onLogout()"
+        ></app-custom-dropdown>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4 p-0">
+  <div class="container-max-width p-3">
+    <ejs-grid
+      #grid
+      [dataSource]="products"
+      [allowPaging]="true"
+      [pageSettings]="{ pageSize: 15, pageSizes: true }"
+      [filterSettings]="{ type: 'Excel' }"
+      [enableAdaptiveUI]="true"
+      [toolbar]="['Search']"
+      [allowSorting]="true"
+      [allowFiltering]="true"
+      height="auto"
+    >
+      <e-columns>
+        <e-column field="id" [isPrimaryKey]="true" [visible]="false"></e-column>
+        <e-column
+          textAlign="Center"
+          headerText="{{ 'Image' | translate }}"
+          width="80"
+          [allowSorting]="false"
+          [template]="imageTemplate"
+        ></e-column>
+        <e-column field="name" headerText="Name" width="150"></e-column>
+        <e-column
+          headerText="{{ 'Category' | translate }}"
+          width="150"
+          [template]="categoryTemplate"
+        ></e-column>
+        <e-column
+          field="price"
+          headerText="{{ 'Price' | translate }}"
+          width="100"
+          format="C2"
+        ></e-column>
+        <e-column
+          field="description"
+          headerText="{{ 'Description' | translate }}"
+          width="400"
+        ></e-column>
+        <e-column
+          headerText="{{ 'Stock' | translate }}"
+          width="100"
+          [template]="stockTemplate"
+        ></e-column>
+      </e-columns>
+    </ejs-grid>
+    <ng-template #imageTemplate let-data>
+      <img
+        [src]="data.image"
+        alt="{{ data.name }}"
+        class="rounded-circle"
+        width="50"
+      />
+    </ng-template>
+    <ng-template #categoryTemplate let-data>
+      <span
+        class="badge"
+        [style.background-color]="getCategoryColor(data.category)"
+      >
+        {{ data.category }}
+      </span>
+    </ng-template>
+    <ng-template #stockTemplate let-data>
+      <span [ngClass]="getStockTextClass(data.stock)">
+        {{ data.stock }}
+      </span>
+    </ng-template>
   </div>
 </div>

@@ -30,6 +30,7 @@
     "@pennify/source": "file:",
     "@popperjs/core": "^2.11.8",
     "@sendgrid/mail": "^8.1.4",
+    "@syncfusion/ej2-angular-base": "^27.2.2",
     "@syncfusion/ej2-angular-buttons": "^27.1.58",
     "@syncfusion/ej2-angular-grids": "^27.1.58",
     "@syncfusion/ej2-angular-inputs": "^27.1.58",

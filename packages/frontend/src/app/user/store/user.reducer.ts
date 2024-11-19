@@ -9,6 +9,7 @@ export interface UserState {
   name: string | null;
   email: string | null;
   accessToken: string | null;
+  profileUrl: string | null;
 }
 
 const initialState: UserState = {
@@ -16,6 +17,7 @@ const initialState: UserState = {
   name: null,
   email: null,
   accessToken: null,
+  profileUrl: null,
 };
 
 export const userReducer = createReducer(

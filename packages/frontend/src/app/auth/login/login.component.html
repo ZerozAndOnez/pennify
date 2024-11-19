@@ -21,6 +21,7 @@
             <div class="mb-3">
               <app-input-password
                 [control]="loginForm.get('password')"
+                [showValidationRules]="false"
                 (input)="clearError()"
               ></app-input-password>
             </div>
@@ -40,7 +41,7 @@
                 [routerLink]="
                   getRedirectRoute(APP_ROUTE_PATHS.passwordResetRequest)
                 "
-                class="text-primary text-decoration-none"
+                class="form-check text-primary text-decoration-none"
               >
                 {{ 'Forgot Password?' | translate }}
               </a>
@@ -115,7 +116,7 @@
                 <span>{{ account.email }}</span>
               </div>
               <app-custom-dropdown
-                [options]="[{ label: 'Remove', value: account.email }]"
+                [options]="[{ label: removeText, value: account.email }]"
                 (optionSelected)="remove($event)"
               ></app-custom-dropdown>
             </li>

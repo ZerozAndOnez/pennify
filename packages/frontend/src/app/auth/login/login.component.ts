@@ -4,10 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthStore } from '../store/auth.store';
-import {
-  emailValidator,
-  passwordValidator,
-} from '../../utils/validators/form-validators';
+import { emailValidator } from '../../utils/validators/form-validators';
 import { AngularCommonModule } from '../../modules/angular-common.module';
 import { PennifyAppModule } from '../../modules/pennify-app.module';
 import { AuthBackgroundComponent } from '../common/auth-background/auth-background.component';
@@ -20,6 +17,7 @@ import { selectAccounts } from '../../user/store/accounts/account.selectors';
 import { hash } from '../../utils/hashing/hashing.utils';
 import { Account } from '../../user/store/accounts/account.reducer';
 import { CustomDropdownComponent } from '../../common/components/dropdowns/custom-dropdown/custom-dropdown.component';
+import { translate } from '../../utils/intl/translate';
 
 @Component({
   standalone: true,
@@ -42,6 +40,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loginForm!: FormGroup;
   APP_ROUTE_PATHS = APP_ROUTE_PATHS;
   getRedirectRoute = getRedirectRoute;
+  removeText: string;
 
   accounts$: Observable<Account[]> = of([]);
   showRecentlyUsedAccounts = false;
@@ -52,12 +51,13 @@ export class LoginComponent implements OnInit, AfterViewInit {
     public authStore: AuthStore
   ) {
     this.accounts$ = this.store.select(selectAccounts);
+    this.removeText = translate('Remove');
   }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, emailValidator]],
-      password: ['', [Validators.required, passwordValidator]],
+      password: ['', [Validators.required]],
       rememberMe: [false],
     });
 
